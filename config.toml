@@ -92,10 +92,10 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Aliquam"
-      subtitle = "Ipsum Dolor Sit Amet"
+      title = "S&P 500"
+      subtitle = "S&P 500 index analysis"
       image = "pic01.jpg"
-      url = "blogs/aliquam"
+      url = "blogs/blog6"
 
     [[params.tiles.showcase]]
       title = "Tempus"
