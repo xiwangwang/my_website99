@@ -18,6 +18,16 @@
     </item>
     
     <item>
+      <title>TBCCC</title>
+      <link>/blogs/blog5/</link>
+      <pubDate>Sun, 18 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/blog5/</guid>
+      <description>data(&amp;quot;managers&amp;quot;) sp500_return &amp;lt;- managers$`SP500 TR` skim(sp500_return)  (#tab:load_sp500_return_data)Data summary  Name sp500_return  Number of rows 132  Number of columns 1  _______________________   Column type frequency:   numeric 1  ________________________   Group variables None    Variable type: numeric
+  skim_variable n_missing complete_rate mean sd p0 p25 p50 p75 p100 hist    SP500 TR 0 1 0.01 0.04 -0.14 -0.</description>
+    </item>
+    
+    <item>
       <title>Aliquam</title>
       <link>/blogs/aliquam/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>

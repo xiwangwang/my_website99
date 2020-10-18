@@ -1,0 +1,97 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-18"
+description: TBCCC
+draft: false
+image: pic09.jpg
+keywords: ""
+slug: blog5
+title: TBCCC
+---
+
+
+
+<pre class="r"><code>data(&quot;managers&quot;)
+sp500_return &lt;- managers$`SP500 TR`
+skim(sp500_return)</code></pre>
+<table>
+<caption>(#tab:load_sp500_return_data)Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">sp500_return</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">132</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SP500 TR</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.04</td>
+<td align="right">-0.14</td>
+<td align="right">-0.02</td>
+<td align="right">0.01</td>
+<td align="right">0.04</td>
+<td align="right">0.1</td>
+<td align="left">▁▂▅▇▃</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>plot(sp500_return * 100,
+     main=&quot;S&amp;P 500: 1-month % returns&quot;,
+     ylab=&quot;return&quot;, xlab=&quot;date&quot;)</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/plot_sp500_return_time_series-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sp500_index &lt;- cumprod(1 + sp500_return) #Cumulative Sums, Products, and Extremes
+plot(sp500_index,
+     main=&quot;S&amp;P 500 Index&quot;,
+     ylab=&quot;price&quot;, xlab=&quot;date&quot;)</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/index-1.png" width="648" style="display: block; margin: auto;" /></p>

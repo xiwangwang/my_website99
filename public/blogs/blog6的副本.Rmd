@@ -1,0 +1,56 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-18"
+description: S&P 500
+draft: false
+image: pic10.jpg
+keywords: ""
+slug: blog6
+title: S&P 500
+---
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,   
+  size="small")   
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(PerformanceAnalytics) #Econometric tools for performance and risk analysis
+library(TTR) #Functions to create Technical Trading Rules
+library(skimr)
+```
+
+```{r load_sp500_return_data}
+data("managers")
+sp500_return <- managers$`SP500 TR`
+skim(sp500_return)
+```
+
+```{r plot_sp500_return_time_series}
+plot(sp500_return * 100,
+     main="S&P 500: 1-month % returns",
+     ylab="return", xlab="date")
+
+```
+
+```{r index}
+sp500_index <- cumprod(1 + sp500_return) #Cumulative Sums, Products, and Extremes
+plot(sp500_index,
+     main="S&P 500 Index",
+     ylab="price", xlab="date")
+```
+
+
