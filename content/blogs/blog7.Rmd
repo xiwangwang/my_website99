@@ -3,12 +3,12 @@ categories:
 - ""
 - ""
 date: "2020-10-20"
-description: A test
+description: An Analysis of Health Patterns
 draft: false
 image: pic08.jpg
 keywords: ""
 slug: blog7
-title: Try Me
+title: Youth Risk Behavior Surveillance
 ---
 
 ```{r, setup, echo=FALSE}
@@ -27,155 +27,252 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+
+```{r load-libraries, echo=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(mosaic)
 library(ggthemes)
-library(lubridate)
-library(fivethirtyeight)
+library(GGally)
+library(readxl)
 library(here)
 library(skimr)
 library(janitor)
-library(vroom)
+library(broom)
 library(tidyquant)
-library(rvest)    # scrape websites
-library(purrr)  
-library(lubridate) #to handle dates
+library(infer)
+library(openintro)
+library(tidyquant)
 ```
 
-Back in 2014, [fivethiryeight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) published an article on alchohol consumption in different countries. The data `drinks` is available as part of the `fivethirtyeight` package. Let's get the data.
 
-```{r, load_alcohol_data}
-library(fivethirtyeight)
-data(drinks)
+# Youth Risk Behavior Surveillance
+
+Every two years, the Centers for Disease Control and Prevention conduct the [Youth Risk Behavior Surveillance System (YRBSS)](https://www.cdc.gov/healthyyouth/data/yrbs/index.htm) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+
+## Load the data
+
+This data is part of the `openintro` textbook and we can load and inspect it. There are observations on 13 different variables, some categorical and some numerical. The meaning of each variable can be found by bringing up the help file:
+
+?yrbss
+
+```{r}
+data(yrbss)
+glimpse(yrbss)
 ```
 
-Before further analysis, let's have a brief look into the dataframe.
+Before you carry on with your analysis, it's is always a good idea to check with `skimr::skim()` to get a feel for missing values, summary statistics of numerical variables, and a very rough histogram.
 
-```{r glimpse_skim_data}
-glimpse(drinks)
-skim(drinks)
+## Exploratory Data Analysis
+
+You will first start with analyzing the `weight` of participants in kilograms. Using visualization and summary statistics, describe the distribution of weights. How many observations are we missing weights from?
+
+```{r, eda_on_weight}
+weight_distribution <- skim(yrbss$weight)
+
+# Calculate missing values in weights
+weight_missing_val <- yrbss %>% 
+  select(weight) %>% 
+  summarise(number_of_missing_weight_observations = sum(is.na(weight)))
+
+# Print tables of findings
+weight_distribution
+weight_missing_val
+
+# Create density Plot
+ggplot(yrbss, aes(x = weight)) +
+  geom_density() +
+  
+  # Add a red line showing normal distributrion for comparison
+  stat_function(
+    fun = dnorm,
+    color = "red",
+    size = 2,
+    args = list(mean = mean(yrbss$weight, na.rm = TRUE), 
+                sd = sd(yrbss$weight, na.rm = TRUE))) +
+  
+  # Add titles
+  labs(title = "Weight density plot vs. Normal distribution",
+       subtitle ="Red line shows a normal distribution with the same mean and standard deviation",
+       x = "weight (kg)") + 
+  NULL
+
+```
+The data show that 1004 weight observations are missing. Also, based on the plot and the fact that mean weight is higher than median weight, we can conclude that the weight distribution is significantly right-skewed. This is most likely because there is a stricter lower bound to weights of a person. 
+
+
+
+Next, consider the possible relationship between a high schooler’s weight and their physical activity. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
+
+Let’s create a new variable `physical_3plus`, which will be `yes` if they are physically active for at least 3 days a week, and `no` otherwise.
+
+  
+```{r}
+yrbss <- yrbss %>% 
+  mutate(physical_3plus = ifelse(physically_active_7d >= 3, "yes", "no"))
+
+yrbss %>% 
+  filter(!is.na(physical_3plus)) %>% 
+  group_by(physical_3plus) %>% 
+  summarise(count = n()) %>% 
+  mutate(prop= count/sum(count))
+
+```
+Can you provide a 95% confidence interval for the population proportion of high schools that are *NOT* active 3 or more days per week?
+
+```{r}
+CI_limits <- yrbss %>% 
+  
+  # clean NAs from weight and physical 3plus
+  drop_na(weight, physical_3plus) %>% 
+  
+  # Seperate into 3plus yes and no category
+  group_by(physical_3plus) %>% 
+  
+  # COunt the number of active and non-active students
+  summarise(count = n()) %>%
+  
+  # Calculate the proportion of each group (active and non-active), standard error, and confidence interval of each proportion
+  mutate(proportion = count/sum(count),
+         t_critical = qt(0.975, sum(count)-1),
+         se_proportion = sqrt(proportion * (1 - proportion)/sum(count)),
+         margin_of_error = t_critical * se_proportion,
+         proportion_low = proportion - margin_of_error,
+         proportion_high = proportion + margin_of_error) %>%
+  
+  # select required columns only
+  select(physical_3plus, proportion_low, proportion_high) %>%
+  
+  # filter for non-active students only
+  filter(physical_3plus == "no")
+
+CI_limits
+  
+```
+The 95% confidence interval for the population proportion of high school students that are *NOT* active 3 or more days per week is 0.317 - 0.334.
+
+  
+Make a boxplot of `physical_3plus` vs. `weight`. Is there a relationship between these two variables? What did you expect and why?
+
+```{r, boxplot}
+  
+yrbss %>%
+  
+  # Drop observations where relevant entries are missing
+  drop_na(physical_3plus, weight) %>%
+  
+  # Plot graph, stating variables for the x and y axis
+  ggplot(aes(x = physical_3plus, y = weight)) +
+  
+  # Format plot as boxplot
+  geom_boxplot() +
+  
+  # Choose theme
+  theme_economist() +
+  
+  # Add titles
+  labs(title = "Physically active kids have a higher weight on average",
+       y = "weight (kg)",
+       x = "physical activeness")
+  
+
+```
+The trend seems to be that physically active kids are likely to have higher weights than those who are not. In other words, there is a positive correlation between physical activity and weight. This is opposite to what was expected. I previously believed that since non-active kids exercise less, they burn less calories daily and hence should be heavier.  
+
+
+## Confidence Interval
+
+Boxplots show how the medians of the two distributions compare, but we can also compare the means of the distributions using either a confidence interval or a hypothesis test. Note that when we calculate the mean/SD, etc weight in these groups using the mean function, we must ignore any missing values by setting the `na.rm = TRUE`.
+
+
+```{r}
+yrbss %>%
+  group_by(physical_3plus) %>%
+  filter(!is.na(physical_3plus)) %>% 
+  summarise(mean_weight = mean(weight, na.rm = TRUE),
+            sd_weight = sd(weight, na.rm=TRUE),
+            count = n(),
+            se_weight = sd_weight/sqrt(count),
+            t_critical = qt(0.975, count-1), 
+            margin_of_error = t_critical * se_weight,
+            lower = mean_weight - t_critical * se_weight,
+            upper = mean_weight + t_critical * se_weight
+            )
+
 ```
 
-There are 193 rows, which represent 193 countries, and 5 columns, among which we have 1 character variable and 4 numeric variables. Then, let's draw a plot for the top and bottom 25 beer consuming countries. 
+There is an observed difference of about 1.77kg (68.44 - 66.67), and we notice that the two confidence intervals do not overlap. It seems that the difference is at least 95% statistically significant. Let us also conduct a hypothesis test.
 
-```{r beer_plot_top_25}
-beer_plot <- drinks %>%
-  arrange(desc(beer_servings)) %>%
-  select(country, beer_servings)
+## Hypothesis test with formula
 
-beer_plot_top_25 <- head(beer_plot, 25)
+Write the null and alternative hypotheses for testing whether mean weights are different for those who exercise at least times a week and those who don’t.
 
-ggplot(data = beer_plot_top_25, aes(x = beer_servings, y = reorder(country, beer_servings))) + 
-  geom_col() + 
-  labs(title = "Top 25 Beer Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
+Null hypothesis: Difference in mean weights of physically active and non-active high school students is 0.
+Alternate hypothesis: Difference in mean weights of physically active and non-active high school students is not 0.
+
+```{r}
+t.test(weight ~ physical_3plus, data = yrbss)
+```
+This yields a t statistic of -5, and a p-value of 9e-08. Thus, at 95% level of confidence, we can reject the null hypothesis. In fact, based on calculated p-value, we can reject the null hypothesis even at 99.999% level of confidence. Thus, we accept the alternate hypothesis, that the mean weights are indeed different for those who exercise at least times a week and those who don’t.
+
+
+## Hypothesis test with `infer`
+
+
+Next, we will introduce a new function, `hypothesize`, that falls into the infer workflow. You will use this method for conducting hypothesis tests.
+
+But first, we need to initialize the test, which we will save as `obs_diff`.
+
+```{r}
+obs_diff <- yrbss %>%
+  specify(weight ~ physical_3plus) %>%
+  calculate(stat = "diff in means", order = c("yes", "no"))
+
 ```
 
-```{r beer_plot_bottom_25}
-beer_plot_new <- drinks %>%
-  arrange(beer_servings) %>%
-  select(country, beer_servings)
 
-beer_plot_bottom_25 <- head(beer_plot_new, 25)
+Notice how you can use the functions specify and calculate again like you did for calculating confidence intervals. Here, though, the statistic you are searching for is the difference in means, with the order being yes - no != 0.
 
-ggplot(data = beer_plot_bottom_25, aes(x = beer_servings, y = reorder(country, beer_servings))) + 
-  geom_col() + 
-  labs(title = "Bottom 25 Beer Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
+After you have initialized the test, you need to simulate the test on the null distribution, which we will save as null.
+
+
+```{r}
+set.seed(5555)
+
+null_dist <- yrbss %>%
+  specify(weight ~ physical_3plus) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("yes", "no"))
+
 ```
 
-As we can see from the plots, Namibians consume the most beer among these 193 countries, followed by Czech Republic and Gabon. There are 15 countries either consume little beer or have missing values here. Intuitively, it makes sense that Saudi Arabian people do not drink beer because of their religon. However, things might be different for North Korea, and I believe there is a missing value instead that North Korean people do not have beer at all.
 
-```{r wine_plot_top_25}
-wine_plot <- drinks %>%
-  arrange(desc(wine_servings)) %>%
-  select(country, wine_servings)
+Here, `hypothesize` is used to set the null hypothesis as a test for independence, i.e., that there is no difference between the two population means. In one sample cases, the null argument can be set to *point* to test a hypothesis relative to a point estimate.
 
-wine_plot_top_25 <- head(wine_plot, 25)
+Also, note that the `type` argument within generate is set to permute, which is the argument when generating a null distribution for a hypothesis test.
 
-ggplot(data = wine_plot_top_25, aes(x = wine_servings, y = reorder(country, wine_servings))) + 
-  geom_col() + 
-  labs(title = "Top 25 wine Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
+We can visualize this null distribution with the following code:
+
+```{r}
+ggplot(data = null_dist, aes(x = stat)) +
+  geom_histogram()
+
 ```
 
-```{r wine_plot_bottom_25}
-wine_plot_new <- drinks %>%
-  arrange(wine_servings) %>%
-  select(country, wine_servings)
 
-wine_plot_bottom_25 <- head(wine_plot_new, 25)
+Now that the test is initialized and the null distribution formed, we can visualise to see how many of these null permutations have a difference of at least `obs_stat` of `r obs_diff %>% pull() %>% round(2)`?
 
-ggplot(data = wine_plot_bottom_25, aes(x = wine_servings, y = reorder(country, wine_servings))) + 
-  geom_col() + 
-  labs(title = "Bottom 25 wine Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
+We can also calculate the p-value for your hypothesis test using the function `infer::get_p_value()`.
+
+```{r}
+
+null_dist %>% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = "two_sided")
+
+null_dist %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
+
 ```
 
-From the above plots, French people consume the most wine, which is intuitively correct, followed by Portugal and Andorra. It is easy to notice that European countries take up the most places of top 25 beer consuming countries, so we may conclude that European people do have a passion for wine. As for the bottom 25 countries, all of them show a value of zero, but just like the beer analysis above, some countries sure do not drink wine, while some may just have a missing value over here.
 
-```{r spirit_plot_top_25}
-spirit_plot <- drinks %>%
-  arrange(desc(spirit_servings)) %>%
-  select(country, spirit_servings)
-
-spirit_plot_top_25 <- head(spirit_plot, 25)
-
-ggplot(data = spirit_plot_top_25, aes(x = spirit_servings, y = reorder(country, spirit_servings))) + 
-  geom_col() + 
-  labs(title = "Top 25 Spirit Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
-```
-
-```{r spirit_plot_bottom_25}
-spirit_plot_new <- drinks %>%
-  arrange(spirit_servings) %>%
-  select(country, spirit_servings)
-
-spirit_plot_bottom_25 <- head(spirit_plot_new, 25)
-
-ggplot(data = spirit_plot_bottom_25, aes(x = spirit_servings, y = reorder(country, spirit_servings))) + 
-  geom_col() + 
-  labs(title = "Bottom 25 Spirit Consuming Counntries", 
-       x = "Servings",
-       y = "Countries")
-```
-
-The maximun consumption for spirits is bigger than both beer and wine, as Grenadaians drink over 400 liters of spirits per year. Belarus and Russian Federation are top 2 and top 3, respectively. There are 23 countries that have zero value for spirits consumption, either becuase of religon reason or due to missing values.
-
-```{r total_lirers_of_pure_alcohol}
-pure_alcohol <- drinks %>%
-  arrange(desc(total_litres_of_pure_alcohol)) %>%
-  select(country, total_litres_of_pure_alcohol)
-
-pure_alcohol_top_25 <- head(pure_alcohol, 25)
-
-ggplot(data = pure_alcohol_top_25, aes(x = total_litres_of_pure_alcohol, y = reorder(country, total_litres_of_pure_alcohol))) + 
-  geom_col() + 
-  labs(title = "Pure Alcohol Consumption Top 25", 
-       x = "Servings",
-       y = "Countries")
-```
-
-```{r ranks}
-drinks_ranks <- drinks %>% #add rankings to each category 
-  mutate(beer_rank = rank(-beer_servings, na.last = TRUE, ties.method = "random")) %>%
-  mutate(wine_rank = rank(-wine_servings, na.last = TRUE, ties.method = "random")) %>%
-  mutate(spirit_rank = rank(-spirit_servings, na.last = TRUE, ties.method = "random")) %>%
-  mutate(alcohol_rank = rank(-total_litres_of_pure_alcohol, na.last = TRUE, ties.method = "random")) %>%
-  arrange(alcohol_rank) %>%
-  select(country, beer_rank, wine_rank, spirit_rank, alcohol_rank)
- 
-drinks_ranks_top_10 <- head(drinks_ranks, 10)
-
-drinks_ranks_top_10
-```
-
-As for pure alcohol consumption, Belarus, Lithuania and Andorra take up the first 3 places. As we can see from the above table, countries with higher rankings in pure alcohol consumption also have higher rankings in at least one of the three main alcohol beverages. 
-
+This the standard workflow for performing hypothesis tests.

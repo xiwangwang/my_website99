@@ -104,15 +104,15 @@ disqusShortname = ""
       url = "blogs/blog5"
 
     [[params.tiles.showcase]]
-      title = "Try Mes"
-      subtitle = "A Test"
+      title = "Youth Risk Behavior Surveillance"
+      subtitle = "An Analysis of Health Patterns"
       image = "pic06.jpg"
       url = "blogs/blog7"
 
     [[params.tiles.showcase]]
       title = "Ipsum"
       subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
+      image = "pic01.jpg"
       url = "blogs/ipsum"
 
   

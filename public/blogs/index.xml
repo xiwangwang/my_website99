@@ -19,14 +19,13 @@ glimpse(drinks) ## Rows: 193 ## Columns: 5 ## $ country &amp;lt;chr&amp;gt; &amp
     </item>
     
     <item>
-      <title>Try Me</title>
+      <title>Youth Risk Behavior Surveillance</title>
       <link>/blogs/blog7/</link>
       <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog7/</guid>
-      <description>Back in 2014, fivethiryeight.com published an article on alchohol consumption in different countries. The data drinks is available as part of the fivethirtyeight package. Let’s get the data.
-library(fivethirtyeight) data(drinks) Before further analysis, let’s have a brief look into the dataframe.
-glimpse(drinks) ## Rows: 193 ## Columns: 5 ## $ country &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Albania&amp;quot;, &amp;quot;Algeria&amp;quot;, &amp;quot;A… ## $ beer_servings &amp;lt;int&amp;gt; 0, 89, 25, 245, 217, 102, 193, 21, 261,… ## $ spirit_servings &amp;lt;int&amp;gt; 0, 132, 0, 138, 57, 128, 25, 179, 72, 7… ## $ wine_servings &amp;lt;int&amp;gt; 0, 54, 14, 312, 45, 45, 221, 11, 212, 1… ## $ total_litres_of_pure_alcohol &amp;lt;dbl&amp;gt; 0.</description>
+      <description>Youth Risk Behavior Surveillance Every two years, the Centers for Disease Control and Prevention conduct the Youth Risk Behavior Surveillance System (YRBSS) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+Load the data This data is part of the openintro textbook and we can load and inspect it.</description>
     </item>
     
     <item>
