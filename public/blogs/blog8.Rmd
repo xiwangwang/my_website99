@@ -5,7 +5,7 @@ categories:
 date: "2020-10-20"
 description: Analysing IBM HR Analytics Employee Attrition & Performance data
 draft: false
-image: pic08.jpg
+image: pic07.jpg
 keywords: ""
 slug: blog8
 title: Human Resoruce Analytics
@@ -47,7 +47,7 @@ library(tidyquant)
 We will analyse a data set on Human Resoruce Analytics. The [IBM HR Analytics Employee Attrition & Performance data set](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) is a fictional data set created by IBM data scientists.  Among other things, the data set includes employees' income, their distance from work, their position in the company, their level of education, etc. A full description can be found on the website.
 
 
-# Cleaning the data
+## Cleaning the data
 
 ```{r}
 hr_dataset <- read_csv("~/Desktop/LBS/Data Analytics/Session____Workshop1_export/session2-workshop1/data/datasets_1067_1925_WA_Fn-UseC_-HR-Employee-Attrition.csv")
@@ -103,7 +103,7 @@ hr_cleaned <- hr_dataset %>%
          years_since_last_promotion)
 ```
 
-# How often do people leave the company (`attrition`)
+## How often do people leave the company (`attrition`)
 ```{r attrition, message=FALSE, warning=FALSE}
 hr_cleaned %>% 
   filter(attrition == "Yes") %>% 
@@ -112,7 +112,7 @@ hr_cleaned %>%
 Employees of the company leave the firm after 5.13 years on average.
 
 
-# How are `age`, `years_at_company`, `monthly_income` and `years_since_last_promotion` distributed? 
+## How are `age`, `years_at_company`, `monthly_income` and `years_since_last_promotion` distributed? 
 
 ```{r summarise_hr}
 summarise_age <-
@@ -162,7 +162,7 @@ From our analysis we can infer the approximate distribution of our four variable
 - Monthly income seems to be right-skewed, since the mean is above the median and sits closer to the min than to the max.
 - Years since last Promotion also seems to be right-skewed, since the mean is above the median and sits closer to the min than to the max.
 
-# How are `job_satisfaction` and `work_life_balance` distributed? 
+## How are `job_satisfaction` and `work_life_balance` distributed? 
 
 ```{r satisfaction_balance, message=FALSE, warning=FALSE}
 distr_satisf <- hr_cleaned %>% 
@@ -184,7 +184,7 @@ distr_balance
 We can see that the job satisfaction and work life balance are not distributed similarly. Both have the majority of employees in the most positive categories, however for work life balance this share is slightly higher at around 70% compared to roughly 60% among job satisfaction. There is also a substantially higher share of employees who are dissatisfied with their job (20%) whereas only around 5% claim to have a bad work life balance. Whereas it is often discussed that work life balance is a main driver of job satisfaction in businesses, this indicates that it is not be the only driver.
 
 
-# Is there any relationship between monthly income and education? Monthly income and gender?
+## Is there any relationship between monthly income and education? Monthly income and gender?
 ```{r income_education, message=FALSE, warning=FALSE}
 ggplot(hr_cleaned, aes(x = reorder(education, monthly_income, FUN = mean), y = monthly_income)) + # Boxplots are ordered by mean monthly income. This provides additional information about the data as median income and inter-quartile ranges are already graphically demonstrated.
   geom_boxplot() +
@@ -206,7 +206,7 @@ Overall, there seems to be a positive correlation between income and education l
 
 Meanwhile, there  also seems to be a relationship between income and gender. Males have a lower mean, median, 25-p & 75-p than females, this difference is however minimal. Interestingly, males do also have a higher number of outliers on the top end of the spectrum.
 
-# Boxplot of income vs job role
+## Boxplot of income vs job role
 
 ```{r box_income_role, message=FALSE, warning=FALSE}
 ggplot(hr_cleaned, aes(y = reorder(job_role, monthly_income, FUN = mean), x = monthly_income)) + 
@@ -221,7 +221,7 @@ ggplot(hr_cleaned, aes(y = reorder(job_role, monthly_income, FUN = mean), x = mo
 The above highlights which roles are being paid most. They also show that there is a tendency for higher paid roles to have a more spread salary distribution.
 
 
-# Calculate and plot a bar chart of the mean (or median?) income by education level.
+## Calculate and plot a bar chart of the mean (or median?) income by education level.
 
 ```{r bar_education, message=FALSE, warning=FALSE}
 hr_cleaned %>%
@@ -237,7 +237,7 @@ hr_cleaned %>%
 
 Due to our previously conducted analysis we have reason to believe that education level has a bigger effect on overall salary range rather than actual salary. Plotting the median income would not show us these outliers that highlight career opportunities at the top end of the spectrum so we decided to plot the mean salary by education. We can see that this increases with educational level as expected.
 
-# Plot the distribution of income by education level by performance rating
+## Plot the distribution of income by education level by performance rating
 ```{r distr_income_education, message=FALSE, warning=FALSE}
 hr_cleaned %>%
   ggplot(aes(y = reorder(education, monthly_income, FUN = mean), x = monthly_income)) +
@@ -255,7 +255,7 @@ hr_cleaned %>%
 Again we can see our previously discovered tendency for education to allow for a greater range of salaries. In the above boxplots we can again see that a better performance ("Outstanding") tends to lead to a greater salary spread and slightly higher mean salary for better educated employees. This does not hold perfectly true but there is a general tendency from below college ducation to having a doctor. This indicates that good work especially pays off when you have the right educational level to step up in the company.
 
 
-# Plot income vs age, faceted by `job_role`
+## Plot income vs age, faceted by `job_role`
 ```{r job_role, message=FALSE, warning=FALSE}
 # find job role with the highest mean salary
 prof_role <- hr_cleaned %>% 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lifestyle on Cathie</title>
+    <title>Lifestyle on Xiwen WANG</title>
     <link>/blogs/</link>
-    <description>Recent content in Lifestyle on Cathie</description>
+    <description>Recent content in Lifestyle on Xiwen WANG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate><atom:link href="/blogs/index.xml" rel="self" type="application/rss+xml" />
@@ -34,7 +34,7 @@ Cleaning the data hr_dataset &amp;lt;- read_csv(&amp;quot;~/Desktop/LBS/Data Ana
       <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog7/</guid>
-      <description>Youth Risk Behavior Surveillance Every two years, the Centers for Disease Control and Prevention conduct the Youth Risk Behavior Surveillance System (YRBSS) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+      <description>Every two years, the Centers for Disease Control and Prevention conduct the Youth Risk Behavior Surveillance System (YRBSS) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
 Load the data This data is part of the openintro textbook and we can load and inspect it.</description>
     </item>
     
