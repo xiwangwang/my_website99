@@ -104,8 +104,8 @@ disqusShortname = ""
       url = "blogs/tempus"
 
     [[params.tiles.showcase]]
-      title = "TBCccc"
-      subtitle = "wxw tbcccc"
+      title = "Alcohol Consuming Analysis"
+      subtitle = "Where Do People Drink The Most Beer, Wine and Spirits?"
       image = "pic03.jpg"
       url = "blogs/blog5"
 
