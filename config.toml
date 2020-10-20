@@ -98,16 +98,16 @@ disqusShortname = ""
       url = "blogs/blog6"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
-      image = "pic02.jpg"
-      url = "blogs/tempus"
-
-    [[params.tiles.showcase]]
       title = "Alcohol Consuming Analysis"
       subtitle = "Where Do People Drink The Most Beer, Wine and Spirits?"
       image = "pic03.jpg"
       url = "blogs/blog5"
+
+    [[params.tiles.showcase]]
+      title = "Tempus"
+      subtitle = "Feugiat Amet Tempus"
+      image = "pic02.jpg"
+      url = "blogs/tempus"
 
     [[params.tiles.showcase]]
       title = "Ipsum"
