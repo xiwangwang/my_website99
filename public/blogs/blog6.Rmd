@@ -3,12 +3,12 @@ categories:
 - ""
 - ""
 date: "2020-10-18"
-description: S&P 500
+description: A Brief Look at S&P 500
 draft: false
 image: pic10.jpg
 keywords: ""
 slug: blog6
-title: S&P 500
+title: Brief Intro to S&P 500 
 ---
 
 ```{r, setup, echo=FALSE}

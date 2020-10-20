@@ -92,8 +92,8 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "S&P 500"
-      subtitle = "S&P 500 index analysis"
+      title = "Brief Intro to S&P 500"
+      subtitle = "A Brief Look at S&P 500"
       image = "pic01.jpg"
       url = "blogs/blog6"
 
