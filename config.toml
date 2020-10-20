@@ -110,10 +110,10 @@ disqusShortname = ""
       url = "blogs/blog7"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
+      title = "Human Resoruce Analytics"
+      subtitle = "Analysing IBM HR Analytics Employee Attrition & Performance data"
       image = "pic01.jpg"
-      url = "blogs/ipsum"
+      url = "blogs/blog8"
 
   
     # You can make more showcases by copy and pasting the code above
