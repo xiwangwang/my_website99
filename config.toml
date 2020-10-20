@@ -94,7 +94,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Brief Intro to S&P 500"
       subtitle = "A Brief Look at S&P 500"
-      image = "pic01.jpg"
+      image = "pic05.jpg"
       url = "blogs/blog6"
 
     [[params.tiles.showcase]]
