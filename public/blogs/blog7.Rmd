@@ -5,7 +5,7 @@ categories:
 date: "2020-10-20"
 description: A test
 draft: false
-image: pic13.jpg
+image: pic08.jpg
 keywords: ""
 slug: blog7
 title: Try Me
