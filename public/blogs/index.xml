@@ -8,21 +8,22 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate><atom:link href="/blogs/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Alcohol Consuming Analysis</title>
+      <link>/blogs/blog5/</link>
+      <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/blog5/</guid>
+      <description>Back in 2014, fivethiryeight.com published an article on alchohol consumption in different countries. The data drinks is available as part of the fivethirtyeight package. Let’s get the data.
+library(fivethirtyeight) data(drinks) Before further analysis, let’s have a brief look into the dataframe.
+glimpse(drinks) ## Rows: 193 ## Columns: 5 ## $ country &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Albania&amp;quot;, &amp;quot;Algeria&amp;quot;, &amp;quot;A… ## $ beer_servings &amp;lt;int&amp;gt; 0, 89, 25, 245, 217, 102, 193, 21, 261,… ## $ spirit_servings &amp;lt;int&amp;gt; 0, 132, 0, 138, 57, 128, 25, 179, 72, 7… ## $ wine_servings &amp;lt;int&amp;gt; 0, 54, 14, 312, 45, 45, 221, 11, 212, 1… ## $ total_litres_of_pure_alcohol &amp;lt;dbl&amp;gt; 0.</description>
+    </item>
+    
+    <item>
       <title>S&amp;P 500</title>
       <link>/blogs/blog6/</link>
       <pubDate>Sun, 18 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog6/</guid>
-      <description>data(&amp;quot;managers&amp;quot;) sp500_return &amp;lt;- managers$`SP500 TR` skim(sp500_return)  (#tab:load_sp500_return_data)Data summary  Name sp500_return  Number of rows 132  Number of columns 1  _______________________   Column type frequency:   numeric 1  ________________________   Group variables None    Variable type: numeric
-  skim_variable n_missing complete_rate mean sd p0 p25 p50 p75 p100 hist    SP500 TR 0 1 0.01 0.04 -0.14 -0.</description>
-    </item>
-    
-    <item>
-      <title>TBCCC</title>
-      <link>/blogs/blog5/</link>
-      <pubDate>Sun, 18 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog5/</guid>
       <description>data(&amp;quot;managers&amp;quot;) sp500_return &amp;lt;- managers$`SP500 TR` skim(sp500_return)  (#tab:load_sp500_return_data)Data summary  Name sp500_return  Number of rows 132  Number of columns 1  _______________________   Column type frequency:   numeric 1  ________________________   Group variables None    Variable type: numeric
   skim_variable n_missing complete_rate mean sd p0 p25 p50 p75 p100 hist    SP500 TR 0 1 0.01 0.04 -0.14 -0.</description>
     </item>
